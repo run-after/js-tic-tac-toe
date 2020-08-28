@@ -1,0 +1,38 @@
+header {
+	display: grid;
+	width: 100%;
+	height: 50px;
+	color: blue;
+	background: white;
+	align-content: center;
+	justify-content: center;
+}
+
+.logo {
+	font-size: 2em;
+	font-weight: bold;
+}
+
+.container {
+	display: grid;
+	height: 100vh; /* why doesn't 100% work? */
+	width: 100%;
+	background: lightslategray;
+}
+
+.board {
+	justify-self: center;
+	align-self: center;
+	display: grid;
+	grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+	height: 500px; 
+	width: 500px;
+}
+
+
+.box {
+	background: white;
+	height: 100%;
+	width: 100%;
+	border: 1px solid black;
+}
