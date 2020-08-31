@@ -31,8 +31,14 @@ header {
 
 
 .box {
+	display: grid;
+	align-content: center;
+	justify-content: center;
 	background: white;
 	height: 100%;
 	width: 100%;
 	border: 1px solid black;
+	font-size: 4em;
+	color: blue;
 }
+
