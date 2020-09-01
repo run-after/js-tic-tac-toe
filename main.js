@@ -17,26 +17,11 @@ const Gameboard = (() => {
   const addListener = () => {
     for(let i=0; i < BOARDSIZE; i++){
       document.getElementById('box'+i).addEventListener('click', function(){ 
-      placePiece(i);  
-    });
-  };
-  }
-  // Places player's piece in correct square when clicked
-  const placePiece = (index) => {
-    if(!isNaN(board[index]) && !Game.threeInARow()) {// If board[index] doesn't have player piece and game isn't over
-      if(Game.round % 2 != 0){
-        board[index] = 'x';
-      }else {
-        board[index] = 'o';
-      }
-    }else{
-      return// else do nothing
+      Game.placePiece(i);  
+      });
     };
-    
-    renderPieces();// Maybe in Game.playRound
-    Game.gameOver();// Check if game is over
-    Game.round++;// Have 2 of these happening - Game.gameOver()
   }
+
   addListener();// Maybe move to Game.start when I make it 
 
   return {board, renderPieces, addListener};// Not sure if I need to return every function etc.
@@ -46,21 +31,21 @@ const Gameboard = (() => {
 const Game = (() => {
   let round = 1;
 
+  // Check if game over
   const gameOver = () => {
     if(threeInARow()) {
       if(round % 2 == 0) {
-        alert("Player 2 wins");
+        alert("Player 2 wins"); // move this to another function that takes player name and alerts it
       }else {
-        alert("player 1 wins");
-        console.log(round);
+        alert("player 1 wins"); // move this to another function that takes player name and alerts it
       };
     };
     if(round === BOARDSIZE && !threeInARow()) {
       alert("cats Game");
     };
-    round ++;// Have 2 of these happening - Gameboard.placePiece()
-  }
+  };
 
+  // Check if 3 in a row
   const threeInARow = () => {
     //horizontal   vertical     diagonal
     // 0 1 2        0 3 6        0 4 8
@@ -76,9 +61,49 @@ const Game = (() => {
        Gameboard.board[2] === Gameboard.board[4] && Gameboard.board[4] === Gameboard.board[6]) {
         return true;
       };
+  };
+
+  const newGame = () => {
+    window.location.reload(false);
   }
 
-  return {round, threeInARow, gameOver}
+  document.getElementById('new-game').addEventListener('click', newGame);
+  
+  // reset game (Don't work)
+  const gameRestart = () => {
+
+    Gameboard.addListener();
+    round = 0;
+    Gameboard.board = [0,1,2,3,4,5,6,7,8];
+    nextRound();// Won't clear board and render new markers
+  };
+
+  // Add listener to reset button(seems to work)
+  document.getElementById('reset').addEventListener('click', gameRestart);
+
+  // ends round an onto next
+  const nextRound = () => {
+    Gameboard.renderPieces();
+    gameOver();// Check if game is over
+    round++;
+  }
+  
+  // place pieces on board
+  const placePiece = (index) => {
+    if(!isNaN(Gameboard.board[index]) && !threeInARow()) {// If board[index] doesn't have player piece and game isn't over
+      if(round % 2 != 0){
+        Gameboard.board[index] = 'x';
+      }else {
+        Gameboard.board[index] = 'o';
+      }
+    }else{
+      return// else do nothing
+    };
+    nextRound();
+  };
+
+  // Allow following items to be accessed
+  return {gameRestart, placePiece}
 })();
 
 const Player = () => {
