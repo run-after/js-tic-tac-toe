@@ -7,8 +7,10 @@ const Gameboard = (() => {
   const renderPieces = () =>  {
     for(let i=0; i < BOARDSIZE; i++){
       const box = document.querySelector('#box'+i);
-      if(isNaN(board[i])){
-        box.textContent = board[i];
+      if(isNaN(Gameboard.board[i])){
+        box.textContent = Gameboard.board[i];
+      }else{
+        box.textContent = '';
       }
     };
   };
@@ -64,24 +66,22 @@ const Game = (() => {
   };
 
   const newGame = () => {
-    window.location.reload(false);
+    window.location.reload(false); // Refresh page
   }
 
   document.getElementById('new-game').addEventListener('click', newGame);
   
   // reset game (Don't work)
   const gameRestart = () => {
-
-    Gameboard.addListener();
     round = 0;
     Gameboard.board = [0,1,2,3,4,5,6,7,8];
-    nextRound();// Won't clear board and render new markers
+    nextRound();
   };
 
   // Add listener to reset button(seems to work)
   document.getElementById('reset').addEventListener('click', gameRestart);
 
-  // ends round an onto next
+  // ends round and onto next
   const nextRound = () => {
     Gameboard.renderPieces();
     gameOver();// Check if game is over
@@ -106,6 +106,8 @@ const Game = (() => {
   return {gameRestart, placePiece}
 })();
 
-const Player = () => {
-  
+function playerFactory(name) {
+  return {
+    name: name,
+  }
 };
