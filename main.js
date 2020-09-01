@@ -32,14 +32,19 @@ const Gameboard = (() => {
 
 const Game = (() => {
   let round = 1;
-
+  let playerName = prompt("Player1 - What's your name?");
+  let player1 = playerFactory(playerName, 'x');
+  playerName = prompt("Player2 - What's your name?");
+  let player2 = playerFactory(playerName, 'o');
+  console.log(player1);
+  console.log(player2);
   // Check if game over
   const gameOver = () => {
     if(threeInARow()) {
       if(round % 2 == 0) {
-        alert("Player 2 wins"); // move this to another function that takes player name and alerts it
+        alert(`${player2.name} wins!`);
       }else {
-        alert("player 1 wins"); // move this to another function that takes player name and alerts it
+        alert(`${player1.name} wins!`);
       };
     };
     if(round === BOARDSIZE && !threeInARow()) {
@@ -92,9 +97,9 @@ const Game = (() => {
   const placePiece = (index) => {
     if(!isNaN(Gameboard.board[index]) && !threeInARow()) {// If board[index] doesn't have player piece and game isn't over
       if(round % 2 != 0){
-        Gameboard.board[index] = 'x';
+        Gameboard.board[index] = player1.symbol;
       }else {
-        Gameboard.board[index] = 'o';
+        Gameboard.board[index] = player2.symbol;
       }
     }else{
       return// else do nothing
