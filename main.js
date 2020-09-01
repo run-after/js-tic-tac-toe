@@ -32,12 +32,32 @@ const Gameboard = (() => {
 
 const Game = (() => {
   let round = 1;
+
+  // Get player1 name
   let playerName = prompt("Player1 - What's your name?");
   let player1 = playerFactory(playerName, 'x');
+
+  // Set default value if none given
+  if(player1.name == null){
+    player1.name = 'Player 1';
+  };
+
+  // Display user name
+  document.getElementById("player1").textContent = `${player1.name}`;
+
+  // Get player 2 name
   playerName = prompt("Player2 - What's your name?");
   let player2 = playerFactory(playerName, 'o');
-  console.log(player1);
-  console.log(player2);
+
+  // Set default name if none given
+  if(player2.name == null){
+    player2.name = 'Player 2';
+  };
+
+  // Display user name
+  document.getElementById("player2").textContent = `${player2.name}`;
+
+
   // Check if game over
   const gameOver = () => {
     if(threeInARow()) {
