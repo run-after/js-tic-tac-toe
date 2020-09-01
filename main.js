@@ -106,8 +106,9 @@ const Game = (() => {
   return {gameRestart, placePiece}
 })();
 
-function playerFactory(name) {
+function playerFactory(name, symbol) {
   return {
     name: name,
+    symbol: symbol,
   }
 };

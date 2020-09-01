@@ -1,16 +1,23 @@
 header {
 	display: grid;
+	grid-auto-flow: column;
 	width: 100%;
 	height: 50px;
 	color: blue;
 	background: white;
 	align-content: center;
-	justify-content: center;
+	justify-content: space-around;
 }
 
 .logo {
 	font-size: 2em;
 	font-weight: bold;
+}
+
+.btn {
+	background: blue;
+	color: white;
+	border-radius: 5px;
 }
 
 .container {
