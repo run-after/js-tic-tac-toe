@@ -24,9 +24,9 @@ const Gameboard = (() => {
     };
   }
 
-  addListener();// Maybe move to Game.start when I make it 
+  addListener();
 
-  return {board, renderPieces, addListener};// Not sure if I need to return every function etc.
+  return {board, renderPieces};
 
 })();
 
@@ -38,7 +38,7 @@ const Game = (() => {
   let player1 = playerFactory(playerName, 'x');
 
   // Set default value if none given
-  if(player1.name == null){
+  if(player1.name == null || player1.name == ''){
     player1.name = 'Player 1';
   };
 
@@ -50,13 +50,12 @@ const Game = (() => {
   let player2 = playerFactory(playerName, 'o');
 
   // Set default name if none given
-  if(player2.name == null){
+  if(player2.name == null || player2.name == ''){
     player2.name = 'Player 2';
   };
 
   // Display user name
   document.getElementById("player2").textContent = `${player2.name}`;
-
 
   // Check if game over
   const gameOver = () => {
@@ -68,7 +67,7 @@ const Game = (() => {
       };
     };
     if(round === BOARDSIZE && !threeInARow()) {
-      alert("cats Game");
+      alert("Cats Game");
     };
   };
 
@@ -128,7 +127,7 @@ const Game = (() => {
   };
 
   // Allow following items to be accessed
-  return {gameRestart, placePiece}
+  return {placePiece}
 })();
 
 function playerFactory(name, symbol) {
