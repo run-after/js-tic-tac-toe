@@ -28,7 +28,36 @@
           <button class="box" id="box8"></button>
         </div>
         <h1 id="player2" class="player"></h1>
+        
+        <div id="modal">
+          <div class="modal-content">
+            <form name="addPlayers" action="" method="get">
+              Player 1:
+              <div class="radios">
+                <input type="radio" name="comp1" value="true">Computer
+                <input type="radio" name="comp1" value="false" checked="checked">Human
+              </div><br>
+              <label for="name1">Name:</label><br>
+              <input type="text" id="name1" name="name1">
+              <br><br>
+              Player 2:
+              <div class="radios">
+                <input type="radio" name="comp2" value="true">Computer
+                <input type="radio" name="comp2" value="false" checked="checked">Human
+              </div><br>
+              <label for="name2">Name:</label><br>
+              <input type="text" id="name2" name="name2">
+              <br>
+              <br>
+              <button id="create-players-btn" type="button">Start Game</button>
+    
+            </form>
+          </div>
+        </div>
       </div>
+
+      
+
     </main>
     <script src="main.js"></script>
   </body>

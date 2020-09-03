@@ -32,30 +32,28 @@ const Gameboard = (() => {
 
 const Game = (() => {
   let round = 1;
+  let player1; //initialize blank player
+  let player2; //initialize blank player
 
-  // Get player1 name
-  let playerName = prompt("Player1 - What's your name?");
-  let player1 = playerFactory(playerName, 'x');
+  let getPlayersInfo = document.getElementById('create-players-btn');
 
-  // Set default value if none given
-  if(player1.name == null || player1.name == ''){
-    player1.name = 'Player 1';
-  };
+// Takes info from user and creates new players
+  getPlayersInfo.onclick = function() {
+    let playerName = document.getElementById("name1").value;
+    let playerComp = document.forms.addPlayers.comp1.value;
+    player1 = playerFactory(playerName, 'x', playerComp);
+    playerName = document.getElementById("name2").value;
+    playerComp = document.forms.addPlayers.comp2.value;
+    player2 = playerFactory(playerName, 'o', playerComp);
+    document.getElementById("player1").textContent = `${player1.name}`;
+    document.getElementById("player2").textContent = `${player2.name}`;
+    modal.style.display="none";
 
-  // Display user name
-  document.getElementById("player1").textContent = `${player1.name}`;
-
-  // Get player 2 name
-  playerName = prompt("Player2 - What's your name?");
-  let player2 = playerFactory(playerName, 'o');
-
-  // Set default name if none given
-  if(player2.name == null || player2.name == ''){
-    player2.name = 'Player 2';
-  };
-
-  // Display user name
-  document.getElementById("player2").textContent = `${player2.name}`;
+    // if player 1 is comp then make the first move right away
+    if(player1.isComp == 'true' && round % 2 != 0 && !gameOver()){
+      ComputerPlayer.makeMove();
+    }
+  };// Put into create player function for each one
 
   // Check if game over
   const gameOver = () => {
@@ -95,7 +93,7 @@ const Game = (() => {
 
   document.getElementById('new-game').addEventListener('click', newGame);
   
-  // reset game (Don't work)
+  // reset game
   const gameRestart = () => {
     round = 0;
     Gameboard.board = [0,1,2,3,4,5,6,7,8];
@@ -105,11 +103,18 @@ const Game = (() => {
   // Add listener to reset button(seems to work)
   document.getElementById('reset').addEventListener('click', gameRestart);
 
-  // ends round and onto next
-  const nextRound = () => {
+  // Ends round and onto next
+  const nextRound = () => { 
     Gameboard.renderPieces();
-    gameOver();// Check if game is over
-    round++;
+    gameOver();
+    if(!threeInARow()){
+      round++;
+      if(player2.isComp == 'true' && round % 2 == 0 && round < BOARDSIZE){
+        ComputerPlayer.makeMove();
+      }else if(player1.isComp == 'true' && round % 2 != 0 && round < BOARDSIZE){
+        ComputerPlayer.makeMove();
+      }
+    }
   }
   
   // place pieces on board
@@ -126,13 +131,27 @@ const Game = (() => {
     nextRound();
   };
 
-  // Allow following items to be accessed
   return {placePiece}
 })();
 
-function playerFactory(name, symbol) {
+// Computer makes move on easy mode
+const ComputerPlayer = (() => {
+  const makeMove = () => {
+    let move = Math.floor((Math.random() * 9) + 1);
+    if(isNaN(Gameboard.board[move])){
+      makeMove();
+    }else {
+      document.getElementById(`box${move}`).click();
+    };
+  }
+
+  return{makeMove};
+})();
+
+function playerFactory(name, symbol, isComp) {
   return {
     name: name,
     symbol: symbol,
+    isComp: isComp,
   }
 };
