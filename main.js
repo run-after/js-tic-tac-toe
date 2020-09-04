@@ -11,7 +11,7 @@ const Gameboard = (() => {
         box.textContent = Gameboard.board[i];
       }else{
         box.textContent = '';
-      }
+      };
     };
   };
 
@@ -22,7 +22,7 @@ const Gameboard = (() => {
       Game.placePiece(i);  
       });
     };
-  }
+  };
 
   addListener();
 
@@ -39,21 +39,35 @@ const Game = (() => {
 
 // Takes info from user and creates new players
   getPlayersInfo.onclick = function() {
-    let playerName = document.getElementById("name1").value;
-    let playerComp = document.forms.addPlayers.comp1.value;
-    player1 = playerFactory(playerName, 'x', playerComp);
-    playerName = document.getElementById("name2").value;
-    playerComp = document.forms.addPlayers.comp2.value;
-    player2 = playerFactory(playerName, 'o', playerComp);
-    document.getElementById("player1").textContent = `${player1.name}`;
-    document.getElementById("player2").textContent = `${player2.name}`;
-    modal.style.display="none";
+    player1 = createPlayer(1);
+    player2 = createPlayer(2);
+    setNamesOnBoard();
 
     // if player 1 is comp then make the first move right away
     if(player1.isComp == 'true' && round % 2 != 0 && !gameOver()){
       ComputerPlayer.makeMove();
-    }
-  };// Put into create player function for each one
+    };
+  };
+
+  const createPlayer = (num) => {
+    let playerName = document.getElementById(`name${num}`).value;
+    let playerComp;
+    let sym;
+    if(num == 1) {
+      playerComp = document.forms.addPlayers.comp1.value;
+      sym = 'x';
+    }else{
+      playerComp = document.forms.addPlayers.comp2.value;
+      sym = 'o'
+    };
+    return playerFactory(playerName, sym, playerComp);
+  };
+
+  const setNamesOnBoard = () => {
+    document.getElementById("player1").textContent = `${player1.name}`;
+    document.getElementById("player2").textContent = `${player2.name}`;
+    modal.style.display="none";
+  };
 
   // Check if game over
   const gameOver = () => {
@@ -113,9 +127,9 @@ const Game = (() => {
         ComputerPlayer.makeMove();
       }else if(player1.isComp == 'true' && round % 2 != 0 && round < BOARDSIZE){
         ComputerPlayer.makeMove();
-      }
-    }
-  }
+      };
+    };
+  };
   
   // place pieces on board
   const placePiece = (index) => {
@@ -124,7 +138,7 @@ const Game = (() => {
         Gameboard.board[index] = player1.symbol;
       }else {
         Gameboard.board[index] = player2.symbol;
-      }
+      };
     }else{
       return// else do nothing
     };
@@ -143,7 +157,7 @@ const ComputerPlayer = (() => {
     }else {
       document.getElementById(`box${move}`).click();
     };
-  }
+  };
 
   return{makeMove};
 })();
@@ -153,5 +167,5 @@ function playerFactory(name, symbol, isComp) {
     name: name,
     symbol: symbol,
     isComp: isComp,
-  }
+  };
 };
