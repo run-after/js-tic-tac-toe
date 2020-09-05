@@ -1,11 +1,9 @@
-const BOARDSIZE = 9;
-
 const Gameboard = (() => {
   let board = [0,1,2,3,4,5,6,7,8];
   
   // Places all pieces from board[] to the DOM
   const renderPieces = () =>  {
-    for(let i=0; i < BOARDSIZE; i++){
+    for(let i=0; i < board.length; i++){
       const box = document.querySelector('#box'+i);
       if(isNaN(Gameboard.board[i])){
         box.textContent = Gameboard.board[i];
@@ -17,7 +15,7 @@ const Gameboard = (() => {
 
   // Adds listener to all squares
   const addListener = () => {
-    for(let i=0; i < BOARDSIZE; i++){
+    for(let i=0; i < board.length; i++){
       document.getElementById('box'+i).addEventListener('click', function(){ 
       Game.placePiece(i);  
       });
@@ -29,6 +27,7 @@ const Gameboard = (() => {
   return {board, renderPieces};
 
 })();
+
 
 const Game = (() => {
   let round = 1;
@@ -51,6 +50,9 @@ const Game = (() => {
 
   const createPlayer = (num) => {
     let playerName = document.getElementById(`name${num}`).value;
+    if(playerName == '' || playerName == nul){
+      playerName = `Player ${num}`;
+    };
     let playerComp;
     let sym;
     if(num == 1) {
@@ -78,7 +80,7 @@ const Game = (() => {
         alert(`${player1.name} wins!`);
       };
     };
-    if(round === BOARDSIZE && !threeInARow()) {
+    if(round === Gameboard.board.length && !threeInARow()) {
       alert("Cats Game");
     };
   };
@@ -123,10 +125,10 @@ const Game = (() => {
     gameOver();
     if(!threeInARow()){
       round++;
-      if(player2.isComp == 'true' && round % 2 == 0 && round < BOARDSIZE){
-        ComputerPlayer.makeMove();
-      }else if(player1.isComp == 'true' && round % 2 != 0 && round < BOARDSIZE){
-        ComputerPlayer.makeMove();
+      if(player2.isComp == 'true' && round % 2 == 0 && round <= Gameboard.board.length){
+        setTimeout(ComputerPlayer.makeMove, 500);
+      }else if(player1.isComp == 'true' && round % 2 != 0 && round <= Gameboard.board.length){
+        setTimeout(ComputerPlayer.makeMove, 500);
       };
     };
   };
@@ -151,7 +153,7 @@ const Game = (() => {
 // Computer makes move on easy mode
 const ComputerPlayer = (() => {
   const makeMove = () => {
-    let move = Math.floor((Math.random() * 9) + 1);
+    let move = Math.floor((Math.random() * 9));
     if(isNaN(Gameboard.board[move])){
       makeMove();
     }else {
