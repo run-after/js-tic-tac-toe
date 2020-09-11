@@ -50,7 +50,7 @@ const Game = (() => {
 
   const createPlayer = (num) => {
     let playerName = document.getElementById(`name${num}`).value;
-    if(playerName == '' || playerName == nul){
+    if(playerName == '' || playerName == null){
       playerName = `Player ${num}`;
     };
     let playerComp;
